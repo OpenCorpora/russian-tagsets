@@ -30,8 +30,8 @@ class Tag(object):
             'PNCT': 'PUNCT',
             'PRCL': 'PART',
             'PREP': 'ADP',
-            'PRTF': 'VERB',
-            'PRTS': 'VERB',
+            'PRTF': 'ADJ',
+            'PRTS': 'ADJ',
             'VERB': 'VERB',
         },
         'Animacy': {
@@ -118,6 +118,12 @@ class Tag(object):
                 self.pos = 'AUX'
             elif gram == 'Pltm':
                 self.grammemes['Number'] = 'Ptan'
+
+        # remove verbal grammemes from ex-participles
+        if self.pos == 'ADJ':
+            for group in ('Aspect', 'Tense', 'VerbForm', 'Voice'):
+                if group in self.grammemes:
+                    del self.grammemes[group]
 
     def _fill_one_gram_oc(self, gram):
         match = False
