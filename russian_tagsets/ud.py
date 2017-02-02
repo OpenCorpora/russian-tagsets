@@ -90,7 +90,7 @@ class Tag(object):
             'PRTS': 'Brev',
         },
         'VerbForm': {
-            'GRND': 'Trans',
+            'GRND': 'Conv',
             'INFN': 'Inf',
             'PRTF': 'Part',
             'PRTS': 'Part',
@@ -98,13 +98,15 @@ class Tag(object):
         },
         'Voice': {
             'actv': 'Act',
+            'GRND': 'Act',
             'pssv': 'Pass',
         }
     }
 
-    def __init__(self, oc_tag):
+    def __init__(self, oc_tag, word):
         self.pos = 'X'
         self.grammemes = dict()
+        self.word = word
         self.unmatched = set()
         self._fill_from_oc(oc_tag)
 
@@ -124,6 +126,10 @@ class Tag(object):
             for group in ('Aspect', 'Tense', 'VerbForm', 'Voice'):
                 if group in self.grammemes:
                     del self.grammemes[group]
+        # change Voice to Mid for -sya-gerunds
+        elif self.pos == 'VERB' and self.grammemes['VerbForm'] == 'Conv':
+            if self.word.endswith(('ся', 'сь')):
+                self.grammemes['Voice'] = 'Mid'
 
     def _fill_one_gram_oc(self, gram):
         match = False
@@ -151,7 +157,7 @@ class Tag(object):
 
 
 def to_ud14(oc_tag, word=None):
-    tag = Tag(oc_tag)
+    tag = Tag(oc_tag, word)
     return str(tag)
 
 converters.add('opencorpora-int', 'ud14', to_ud14)

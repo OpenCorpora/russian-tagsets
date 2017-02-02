@@ -50,8 +50,9 @@ class TestInternalConversion(object):
         ['смогут', 'VERB,perf,intr,plur,3per,futr,indc', 'VERB Aspect=Perf|Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin'],
         #['подойди', 'VERB,perf,intr,sing,impr,excl', 'VERB Aspect=Perf|Mood=Imp|Number=Sing|Person=2|VerbForm=Fin|Voice=Act'],
         #['пройдемте', 'VERB,perf,intr,plur,impr,incl', 'VERB Aspect=Imp|Mood=Imp|Number=Plur|Person=1|VerbForm=Fin|Voice=Act'],
-        #['отражая', 'GRND,impf,tran,pres', 'VERB Aspect=Imp|Tense=Pres|VerbForm=Trans|Voice=Act'],
-        #['выстрадав', 'GRND,perf,tran,past', 'VERB Aspect=Perf|Tense=Past|VerbForm=Trans|Voice=Act'],
+        ['отражая', 'GRND,impf,tran,pres', 'VERB Aspect=Imp|Tense=Pres|VerbForm=Conv|Voice=Act'],
+        ['выстрадав', 'GRND,perf,tran,past', 'VERB Aspect=Perf|Tense=Past|VerbForm=Conv|Voice=Act'],
+        ['закончившись', 'GRND,perf,intr,past,V-sh', 'VERB Aspect=Perf|Tense=Past|VerbForm=Conv|Voice=Mid'],
         ['голодающими', 'PRTF,impf,intr,pres,actv,plur,ablt', 'ADJ Case=Ins|Number=Plur'],
         ['сделанный', 'PRTF,perf,tran,past,pssv,inan,masc,sing,accs', 'ADJ Animacy=Inan|Case=Acc|Gender=Masc|Number=Sing'],
         ['написана', 'PRTS,perf,past,pssv,femn,sing', 'ADJ Case=Nom|Gender=Fem|Number=Sing|Variant=Brev'],
@@ -90,5 +91,5 @@ class TestInternalConversion(object):
 
     @pytest.mark.parametrize(("word", "internal", "ud14"), TEST_DATA)
     def test_from_internal(self, word, internal, ud14):
-        converted = converters.convert(internal, 'opencorpora-int', 'ud14')
+        converted = converters.convert(internal, 'opencorpora-int', 'ud14', word)
         assert converted == ud14
